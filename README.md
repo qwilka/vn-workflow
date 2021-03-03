@@ -1,2 +1,2 @@
 # vnflow
-Simple desktop workflow management.
+Test app.
