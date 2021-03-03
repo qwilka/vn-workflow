@@ -2,32 +2,33 @@
 """
 import copy
 import functools
-import hashlib
+#import hashlib
 import inspect
 import json
 
+from .utilities import dict2hash
 
-def argdict2hash(argdict):
-    """Calculate a hash value for an argdict."""
-    adjson = json.dumps(argdict, sort_keys=True)
-    m = hashlib.md5()
-    m.update(adjson.encode())
-    _hash = m.hexdigest()
-    print(f"adjson={adjson}")
-    print(f"_hash={_hash}")
-    return _hash
+# def argdict2hash(argdict):
+#     """Calculate a hash value for an argdict."""
+#     adjson = json.dumps(argdict, sort_keys=True)
+#     m = hashlib.md5()
+#     m.update(adjson.encode())
+#     _hash = m.hexdigest()
+#     print(f"adjson={adjson}")
+#     print(f"_hash={_hash}")
+#     return _hash
     
 
-def ttest2(a, b, c=10):
-	varnms = ttest.__code__.co_varnames
-	print(f"varnms={varnms}")
-	print(f"ttest.__dict__={ttest.__dict__}")
-	print(f"locals()={locals()}")
-	print(f"dir(ttest)={dir(ttest)}")
-	for ii in range(ttest.__code__.co_argcount):
-		ag = locals().get(varnms[ii])
-		print(f"{ii} {varnms[ii]} {ag}")
-	return a+b+c    
+# def ttest2(a, b, c=10):
+# 	varnms = ttest.__code__.co_varnames
+# 	print(f"varnms={varnms}")
+# 	print(f"ttest.__dict__={ttest.__dict__}")
+# 	print(f"locals()={locals()}")
+# 	print(f"dir(ttest)={dir(ttest)}")
+# 	for ii in range(ttest.__code__.co_argcount):
+# 		ag = locals().get(varnms[ii])
+# 		print(f"{ii} {varnms[ii]} {ag}")
+# 	return a+b+c    
 
 
 def ff(func):
@@ -70,7 +71,7 @@ def ff(func):
 			for ii, _arg in enumerate(args):
 				_argd[func_varnames[ii]] = _arg
 			print(f"_argd={_argd}")
-			_hash = argdict2hash(_argd)
+			_hash = dict2hash(_argd)
 			print(f"func(*args, **kwargs)={func(*args, **kwargs)}")
 			retVal = func(**_argd)
 			print(f"func(**_argd)={retVal}")
@@ -78,9 +79,12 @@ def ff(func):
 	return wrapper
 
 
-#@ff
-def ttest(x, y, z=99):
-	return x+y+z
 
-ttest = ff(ttest)
 
+
+if __name__=="__main__":
+	@ff
+	def ttest(x, y, z=99):
+		return x+y+z
+
+	#ttest = ff(ttest)
